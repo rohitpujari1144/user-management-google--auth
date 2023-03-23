@@ -11,8 +11,8 @@ The admin can view the user, user details and should have permission to delete t
 
 SPECIFICATIONS :
 User registration and management system using React.js with Google account authentication.
-● React.js framework for building the user interface.
-● Project set up done in the Google API Console and enabled the Google Sign-In API to authenticate users via their Google account.
+- React.js framework for building the user interface.
+- Project set up done in the Google API Console and enabled the Google Sign-In API to authenticate users via their Google account.
 ● Used Node.js server with Express.js for Back-end to handle the user registration and management functionality.
 ● MongoDB database to store the user data.
 ● The Authentication and authorization of application using JWT as the token-based authentication method.
