@@ -13,8 +13,8 @@ SPECIFICATIONS :
 User registration and management system using React.js with Google account authentication.
 - React.js framework for building the user interface.
 - Project set up done in the Google API Console and enabled the Google Sign-In API to authenticate users via their Google account.
-● Used Node.js server with Express.js for Back-end to handle the user registration and management functionality.
-● MongoDB database to store the user data.
-● The Authentication and authorization of application using JWT as the token-based authentication method.
-● Implemented functionality for managing the users, such as editing profile information.
-● Designed the user interface for the registration and management system, including the forms for entering user data and the pages for viewing and editing user information.
+- Used Node.js server with Express.js for Back-end to handle the user registration and management functionality.
+- MongoDB database to store the user data.
+- The Authentication and authorization of application using JWT as the token-based authentication method.
+- Implemented functionality for managing the users, such as editing profile information.
+- Designed the user interface for the registration and management system, including the forms for entering user data and the pages for viewing and editing user information.
