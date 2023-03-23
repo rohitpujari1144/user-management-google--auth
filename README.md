@@ -2,8 +2,6 @@
 Frontend deployed URL - https://new-user-management.netlify.app/
 Backend deployed URL - https://react-google-login-be.onrender.com/
 
-User Management Via Google Auth
-
 Created a web-based scheduling user registration and login system using Google Sign-in API.
 A user must be able to sign-in using Google and then this is captured at the back-end.
 In case of first time sign-in, a new user is created in the backend and collect some basic profile information.
