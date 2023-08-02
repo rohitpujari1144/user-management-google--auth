@@ -1,4 +1,4 @@
-# User Management via Google Auth
+# User Management via Google OAuth
 Frontend deployed URL - https://new-user-management.netlify.app/
 
 Backend deployed URL - https://react-google-login-be.onrender.com/
