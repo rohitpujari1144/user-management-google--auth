@@ -4,7 +4,7 @@ const { mongodb, dbName, dbUrl, MongoClient } = require('./../config/dbConfig')
 const { hashPassword, hashCompare, createToken, validate } = require('../common/auth');
 const { ObjectId } = require('mongodb');
 
-// get all users
+// get all users using
 router.get('/', async (req, res) => {
   const client = new MongoClient(dbUrl)
   await client.connect()
@@ -29,7 +29,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-// get one users
+// get one users using
 router.get('/get', async (req, res) => {
   const client = new MongoClient(dbUrl)
   await client.connect()
@@ -37,16 +37,17 @@ router.get('/get', async (req, res) => {
     const db = client.db(dbName)
     const collection = db.collection('All Accounts')
     let user = await collection.findOne({ email: req.query.email })
-    // console.log(user);
     if (user) {
-      res.status(200).send(user)
+      let token = createToken({ name: user.name, email: user.email })
+      // console.log(token);
+      res.status(200).send({ data: user, token: token })
     }
     else {
       res.status(404).send({ message: "No Users Found" })
     }
   }
   catch (error) {
-    // console.log(error);
+    console.log(error);
     res.status(500).send({ message: 'Internal server error', error })
   }
   finally {
@@ -54,44 +55,7 @@ router.get('/get', async (req, res) => {
   }
 });
 
-// user login
-router.get('/login', async (req, res) => {
-  const client = new MongoClient(dbUrl)
-  await client.connect()
-  try {
-    const db = client.db(dbName)
-    const collection = db.collection('All Accounts')
-    let user = await collection.aggregate([{ $match: { email: req.query.email } }]).toArray()
-    if (user.length) {
-      if (req.query.password === undefined || req.query.password === null) {
-        let token = createToken({ name: user[0].name, email: user[0].email })
-        res.status(200).send({ message: 'Login successful', userData: user, tokenData: token })
-      }
-      else {
-        // let passwordCheck = await hashCompare(req.query.password, user[0].password)
-        if (await hashCompare(req.query.password, user[0].password)) {
-          let token = createToken({ name: user[0].name, email: user[0].email })
-          res.status(200).send({ message: 'Login successful', userData: user, tokenData: token })
-        }
-        else {
-          res.status(400).send({ message: 'Invalid login credentials' })
-        }
-      }
-    }
-    else {
-      res.status(400).send({ message: 'Invalid login credentials' })
-    }
-  }
-  catch (error) {
-    // console.log(error);
-    res.status(500).send({ message: 'Internal server error', error })
-  }
-  finally {
-    client.close()
-  }
-});
-
-// user signup
+// user signup using
 router.post('/signup', async (req, res) => {
   const client = new MongoClient(dbUrl)
   await client.connect()
@@ -99,10 +63,12 @@ router.post('/signup', async (req, res) => {
     const db = client.db(dbName)
     const collection = db.collection('All Accounts')
     await collection.insertOne(req.body)
-    res.status(201).send({ message: 'Signup successful', data: req.body })
+    let token = createToken({ name: req.body.name, email: req.body.email })
+    // console.log(token);
+    res.status(201).send({ message: 'Signup successful', data: req.body, token: token })
   }
   catch (error) {
-    // console.log(error);
+    // console.log(error);    
     res.status(500).send({ message: 'Internal server error', error })
   }
   finally {
@@ -111,19 +77,20 @@ router.post('/signup', async (req, res) => {
 })
 
 // update user info
-router.put('/update', async (req, res) => {
+router.put('/update', validate, async (req, res) => {
   const client = new MongoClient(dbUrl)
   await client.connect()
   try {
     const db = client.db(dbName)
     const collection = db.collection('All Accounts')
+    // console.log(req.body);
     req.body.age = parseInt(req.body.age)
     let resData = await collection.findOneAndUpdate({ email: req.query.email }, { $set: req.body })
     let userData = await collection.findOne({ _id: new mongodb.ObjectId(resData.value._id) })
     res.status(200).send({ message: 'User profile successfully updated', data: userData })
   }
   catch (error) {
-    console.log(error);
+    // console.log(error);
     res.status(500).send({ message: 'Internal server error', error })
   }
   finally {
